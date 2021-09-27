@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FacturaPcGerenteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tbl_Detalle">
+    <Key>
+      <PropertyRef Name="idDetalle" />
+    </Key>
+    <Property Name="idDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idFactura" Type="Int32" Nullable="false" />
+    <Property Name="NombreProducto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Cantidad" Type="Int32" />
+    <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="tbl_Factura" Relationship="Self.FK_DetalleFactura" FromRole="tbl_Detalle" ToRole="tbl_Factura" />
+  </EntityType>
+  <EntityType Name="tbl_Factura">
+    <Key>
+      <PropertyRef Name="idFactura" />
+    </Key>
+    <Property Name="idFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreCliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Cedula" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FechaEmision" Type="DateTime" Precision="0" />
+    <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Iva" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="tbl_Detalle" Relationship="Self.FK_DetalleFactura" FromRole="tbl_Factura" ToRole="tbl_Detalle" />
+  </EntityType>
+  <Association Name="FK_DetalleFactura">
+    <End Role="tbl_Factura" Type="Self.tbl_Factura" Multiplicity="1" />
+    <End Role="tbl_Detalle" Type="Self.tbl_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Factura">
+        <PropertyRef Name="idFactura" />
+      </Principal>
+      <Dependent Role="tbl_Detalle">
+        <PropertyRef Name="idFactura" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FacturaPcGerenteEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbl_Detalle" EntityType="Self.tbl_Detalle" />
+    <EntitySet Name="tbl_Factura" EntityType="Self.tbl_Factura" />
+    <AssociationSet Name="FK_DetalleFactura" Association="Self.FK_DetalleFactura">
+      <End Role="tbl_Factura" EntitySet="tbl_Factura" />
+      <End Role="tbl_Detalle" EntitySet="tbl_Detalle" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

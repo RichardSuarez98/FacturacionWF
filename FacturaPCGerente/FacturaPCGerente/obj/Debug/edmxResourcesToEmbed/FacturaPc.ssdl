@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FacturaPcGerenteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Detalle">
+    <Key>
+      <PropertyRef Name="idDetalle" />
+    </Key>
+    <Property Name="idDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idFactura" Type="int" Nullable="false" />
+    <Property Name="NombreProducto" Type="varchar" MaxLength="50" />
+    <Property Name="Cantidad" Type="int" />
+    <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Total" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="tbl_Factura">
+    <Key>
+      <PropertyRef Name="idFactura" />
+    </Key>
+    <Property Name="idFactura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombreCliente" Type="varchar" MaxLength="50" />
+    <Property Name="Cedula" Type="varchar" MaxLength="50" />
+    <Property Name="FechaEmision" Type="date" />
+    <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Iva" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Total" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <Association Name="FK_DetalleFactura">
+    <End Role="tbl_Factura" Type="Self.tbl_Factura" Multiplicity="1" />
+    <End Role="tbl_Detalle" Type="Self.tbl_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Factura">
+        <PropertyRef Name="idFactura" />
+      </Principal>
+      <Dependent Role="tbl_Detalle">
+        <PropertyRef Name="idFactura" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FacturaPcGerenteModelStoreContainer">
+    <EntitySet Name="tbl_Detalle" EntityType="Self.tbl_Detalle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Factura" EntityType="Self.tbl_Factura" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DetalleFactura" Association="Self.FK_DetalleFactura">
+      <End Role="tbl_Factura" EntitySet="tbl_Factura" />
+      <End Role="tbl_Detalle" EntitySet="tbl_Detalle" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
